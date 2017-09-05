@@ -91,7 +91,12 @@ namespace detail {
 
             if (it != itEnd) {
                 auto const &next = *it;
-                if (next[0] == '-' || next[0] == '/') {
+                if (next[0] == '-'
+#ifdef CLARA_PLATFORM_WINDOWS
+                    || next[0] == '/') {
+#else
+		    ) {
+#endif
                     auto delimiterPos = next.find_first_of(" :=");
                     if (delimiterPos != std::string::npos) {
                         m_tokenBuffer.push_back({TokenType::Option, next.substr(0, delimiterPos)});
